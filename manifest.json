@@ -1,0 +1,15 @@
+{
+  "name": "유준이의 일주일",
+  "short_name": "유준이 시간표",
+  "description": "유준이의 시간표, 할 일, 댓글을 가족과 함께 보는 앱",
+  "start_url": "./index.html",
+  "scope": "./",
+  "display": "standalone",
+  "background_color": "#f8fafc",
+  "theme_color": "#1e293b",
+  "orientation": "portrait",
+  "icons": [
+    { "src": "icon-192.png", "sizes": "192x192", "type": "image/png", "purpose": "any maskable" },
+    { "src": "icon-512.png", "sizes": "512x512", "type": "image/png", "purpose": "any maskable" }
+  ]
+}
