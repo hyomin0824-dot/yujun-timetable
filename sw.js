@@ -1,6 +1,6 @@
 // 아주 단순한 서비스워커: 앱 셸을 캐시해서 오프라인에서도 화면이 열리게 합니다.
 // 일정/할일/댓글 데이터는 Firestore에서 실시간으로 받아오므로 캐시하지 않습니다.
-const CACHE = "yujun-timetable-v1";
+const CACHE = "yujun-timetable-v2";
 const ASSETS = ["./", "./index.html", "./app.jsx", "./firebase-config.js", "./manifest.json"];
 
 self.addEventListener("install", (e) => {
