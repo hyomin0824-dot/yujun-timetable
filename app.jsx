@@ -197,6 +197,9 @@ export default function KidsTimetable() {
   const [todos, setTodos] = useState([]);
   const [comments, setComments] = useState([]);
   const [toast, setToast] = useState(null); // { msg, key }
+  const [notifPerm, setNotifPerm] = useState(
+    typeof Notification !== "undefined" ? Notification.permission : "unsupported"
+  );
   const [day, setDay] = useState(defaultDay());
   const [view, setView] = useState("day"); // "day" | "week"
   const [editing, setEditing] = useState(null); // 기존 일정 수정
@@ -282,13 +285,37 @@ export default function KidsTimetable() {
     };
   }, []);
 
-  // 알림 배너 띄우기 (몇 초 후 자동으로 사라짐)
-  const notify = (msg) => {
+  // 알림 배너 띄우기 (몇 초 후 자동으로 사라짐) + 휴대폰 알림(권한 허용 시)
+  const notify = (msg, opts = {}) => {
     const key = Date.now();
     setToast({ msg, key });
     setTimeout(() => {
       setToast((t) => (t && t.key === key ? null : t));
     }, 4000);
+
+    if (typeof Notification !== "undefined" && Notification.permission === "granted") {
+      navigator.serviceWorker?.ready
+        .then((reg) =>
+          reg.showNotification("유준이의 일주일", {
+            body: msg.replace(/^[^\s]+\s*/, ""), // 맨 앞 이모지 제거
+            icon: "icon-192.png",
+            badge: "icon-192.png",
+            tag: opts.tag || "yujun-" + key,
+            vibrate: [200, 100, 200],
+          })
+        )
+        .catch(() => {});
+    }
+  };
+
+  // 알림 권한 요청
+  const requestNotifPermission = async () => {
+    if (typeof Notification === "undefined") return;
+    const perm = await Notification.requestPermission();
+    setNotifPerm(perm);
+    if (perm === "granted") {
+      notify("🔔 알림이 켜졌어요!");
+    }
   };
 
   // 할 일에 설정한 시간이 되면 알림 배너 띄우기 (앱이 열려 있을 때)
@@ -453,25 +480,35 @@ export default function KidsTimetable() {
               : `${DAYS[day]}요일 일정이야`}
           </p>
         </div>
-        <div className="flex bg-white border border-slate-200 rounded-full p-1 mt-1">
-          <button
-            onClick={() => setView("day")}
-            className={
-              "px-3 py-1.5 rounded-full text-xs font-bold " +
-              (view === "day" ? "bg-slate-800 text-white" : "text-slate-400")
-            }
-          >
-            하루
-          </button>
-          <button
-            onClick={() => setView("week")}
-            className={
-              "px-3 py-1.5 rounded-full text-xs font-bold " +
-              (view === "week" ? "bg-slate-800 text-white" : "text-slate-400")
-            }
-          >
-            일주일
-          </button>
+        <div className="flex flex-col items-end gap-1.5 mt-1">
+          {notifPerm !== "unsupported" && notifPerm !== "granted" && (
+            <button
+              onClick={requestNotifPermission}
+              className="flex items-center gap-1 bg-amber-100 border border-amber-300 text-amber-700 rounded-full px-2.5 py-1 text-[11px] font-bold active:scale-95 transition-transform"
+            >
+              🔔 알림 켜기
+            </button>
+          )}
+          <div className="flex bg-white border border-slate-200 rounded-full p-1">
+            <button
+              onClick={() => setView("day")}
+              className={
+                "px-3 py-1.5 rounded-full text-xs font-bold " +
+                (view === "day" ? "bg-slate-800 text-white" : "text-slate-400")
+              }
+            >
+              하루
+            </button>
+            <button
+              onClick={() => setView("week")}
+              className={
+                "px-3 py-1.5 rounded-full text-xs font-bold " +
+                (view === "week" ? "bg-slate-800 text-white" : "text-slate-400")
+              }
+            >
+              일주일
+            </button>
+          </div>
         </div>
       </header>
 
