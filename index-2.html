@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover, user-scalable=no" />
+  <meta name="theme-color" content="#1e293b" />
+  <meta name="mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+  <meta name="apple-mobile-web-app-title" content="유준이의 일주일" />
+  <link rel="manifest" href="manifest.json" />
+  <link rel="apple-touch-icon" href="icon-192.png" />
+  <link rel="icon" href="icon-192.png" />
+  <title>유준이의 일주일</title>
+
+  <!-- Tailwind (스타일링용. 만약 이 스크립트가 막혀도 화면 자체는 뜹니다) -->
+  <script src="https://cdn.tailwindcss.com"></script>
+
+  <style>
+    html, body, #root { height: 100%; }
+    body { margin: 0; -webkit-tap-highlight-color: transparent; }
+    @keyframes fadeIn { from { opacity: 0; transform: translateY(-6px); } to { opacity: 1; transform: translateY(0); } }
+  </style>
+</head>
+<body>
+  <div id="root">
+    <div style="min-height:100vh; display:flex; align-items:center; justify-content:center; color:#94a3b8; font-family:sans-serif; text-align:center; padding:24px;">
+      불러오는 중...
+    </div>
+  </div>
+
+  <!-- React + ReactDOM + Firebase + 앱 코드가 모두 이 한 파일 안에 들어있습니다.
+       (예전에는 4~5개의 외부 CDN을 따로 불러왔는데, 그중 하나라도 막히면
+       화면이 영원히 "불러오는 중"에서 멈췄어요. 이제는 외부 CDN에 의존하지
+       않는 단일 파일이라 훨씬 안정적입니다.) -->
+  <script src="bundle.js"></script>
+</body>
+</html>
