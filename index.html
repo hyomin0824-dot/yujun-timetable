@@ -13,20 +13,8 @@
   <link rel="icon" href="icon-192.png" />
   <title>유준이의 일주일</title>
 
-  <!-- Tailwind (JIT, scans the rendered page) -->
+  <!-- Tailwind (스타일링용. 만약 이 스크립트가 막혀도 화면 자체는 뜹니다) -->
   <script src="https://cdn.tailwindcss.com"></script>
-
-  <!-- React 18 (전역 변수 방식 UMD 빌드: import map이 필요 없어서
-       오래된/일부 모바일 브라우저에서도 안정적으로 동작합니다) -->
-  <script src="https://unpkg.com/react@18/umd/react.production.min.js" crossorigin></script>
-  <script src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js" crossorigin></script>
-
-  <!-- Firebase (호환 버전: 일반 <script> 태그로 바로 쓸 수 있는 전역 firebase 객체 제공) -->
-  <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js"></script>
-  <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-firestore.js"></script>
-
-  <!-- Babel standalone: app.jsx의 JSX 문법만 변환합니다 (import/export 없음) -->
-  <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
 
   <style>
     html, body, #root { height: 100%; }
@@ -36,23 +24,15 @@
 </head>
 <body>
   <div id="root">
-    <div style="min-height:100vh; display:flex; align-items:center; justify-content:center; color:#94a3b8; font-family:sans-serif;">
+    <div style="min-height:100vh; display:flex; align-items:center; justify-content:center; color:#94a3b8; font-family:sans-serif; text-align:center; padding:24px;">
       불러오는 중...
     </div>
   </div>
 
-  <!-- Firebase 초기화 (일반 스크립트, window.db를 전역으로 만들어둠) -->
-  <script src="firebase-config.js"></script>
-
-  <!-- 앱 본체: JSX만 변환되는 일반 스크립트로 실행 (ES모듈 아님) -->
-  <script type="text/babel" data-presets="react" src="app.jsx"></script>
-
-  <script>
-    if ("serviceWorker" in navigator) {
-      window.addEventListener("load", () => {
-        navigator.serviceWorker.register("sw.js").catch(() => {});
-      });
-    }
-  </script>
+  <!-- React + ReactDOM + Firebase + 앱 코드가 모두 이 한 파일 안에 들어있습니다.
+       (예전에는 4~5개의 외부 CDN을 따로 불러왔는데, 그중 하나라도 막히면
+       화면이 영원히 "불러오는 중"에서 멈췄어요. 이제는 외부 CDN에 의존하지
+       않는 단일 파일이라 훨씬 안정적입니다.) -->
+  <script src="bundle.js"></script>
 </body>
 </html>
